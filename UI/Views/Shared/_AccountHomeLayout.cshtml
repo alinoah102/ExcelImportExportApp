@@ -1,0 +1,70 @@
+﻿@model  UI.Models.SidebarViewModel
+
+
+@{
+    ViewData["Title"] = "Account Home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="account-home-navbar-wrapper">
+   <nav class="navbar navbar-light bg-dark">
+        <a href="#" class="btn btn-success" id="menu-toggle">Toggle Menu</a>
+   </nav>
+</div>
+
+
+<div id="account-home-wrapper">
+
+    @* Side Bar*@
+   
+    <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <li>
+                @Html.ActionLink("Home", "AccountIndex", "Account")
+            </li>
+            <li>
+                @Html.ActionLink("Import Data", "ImportData", "Account")
+            </li>
+            <li>
+                <a href="#">Settings</a>
+            </li>
+            <li>
+                <a href="#">Logout</a>
+            </li>
+        </ul>
+    </div>
+
+
+    @* Page Content *@
+
+    
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                   @RenderBody()
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+@*Scripts *@
+
+
+@section Scripts {
+
+    <script>
+        $("#menu-toggle").click(function (e) {
+                               e.preventDefault();
+            $("#account-home-wrapper").toggleClass("menuDisplayed");
+                           });
+    </script>
+ }
+
+    @*<div class="row">
+            <div class="col">
+                <partial name="FileUpload.cshtml">
+            </div>
+        </div>*@
+

@@ -5,7 +5,6 @@ using DataLibrary.DataAccessLayer;
 using DataLibrary.Models;
 using Dapper;
 using GemBox.Spreadsheet;
-using Microsoft.AspNetCore.Http.Internal;
 using Npoi.Mapper;
 using System.Linq;
 using DataLibrary.DALC;
@@ -28,14 +27,22 @@ namespace DataLibrary.BusinessLogicLayer.ExcelSheetProcessor {
 
         }
 
-        public static void ImportExcelFormFile(IFormFile file) {
+        public void ImportExcelFormFile(IFormFile file) {
             
             Mapper mapper = new Mapper(file.OpenReadStream());
             IEnumerable<PersonModel> data = mapper.Take<PersonModel>("data").Select(x => x.Value);
 
+            PersonHelperMethodsDalc personHelperDalc = new PersonHelperMethodsDalc();
             PersonDalc personDalc = new PersonDalc();
 
+            Dictionary<string, int> genderDict = personHelperDalc.GenderDictGet();
+            Dictionary<string, int> maritalStatusDict = personHelperDalc.MartitalStatusDictGet();
+
             foreach (PersonModel m in data) {
+                // Before Insert, map Gender/MaritalStatus names to IDs to match DB design
+                m.GenderID = genderDict[m.Gender];
+                m.MaritalStatusID = maritalStatusDict[m.MaritalStatus];
+
                 personDalc.PersonInsert(m);
             }
         }

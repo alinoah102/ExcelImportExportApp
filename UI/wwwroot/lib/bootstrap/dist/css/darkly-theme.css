@@ -554,10 +554,6 @@ pre {
 
 .container {
     width: 100%;
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto;
 }
 
 @media (min-width: 576px) {
@@ -2405,6 +2401,10 @@ pre {
         border: 0;
     }
 
+input{
+    background-color: transparent;
+}
+
 .form-control {
     display: block;
     width: 100%;
@@ -2422,6 +2422,10 @@ pre {
     transition: border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+}
+
+input {
+    background-color: transparent;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -11778,4 +11782,7 @@ a.text-dark:hover, a.text-dark:focus {
 
     .list-group-item-action .list-group-item-heading {
         color: #fff;
+    }
+    input{
+        background-color: transparent;
     }

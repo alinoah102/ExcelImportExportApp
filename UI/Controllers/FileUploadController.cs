@@ -14,15 +14,19 @@ namespace UI.Controllers
     public class FileUploadController : Controller
     {
 
+        [HttpPost]
+        public async Task<IActionResult> FileUploadIndex(List<IFormFile> files) {
 
-        [HttpPost("FileUpload")]
-        public async Task<IActionResult> Index(List<IFormFile> files) {
+            // TO DO: AT LEAST VALIDATE FILE SIGNATURES MAN.. THIS IS WILD...
+
+            ExcelFileProcessor fileProc = new ExcelFileProcessor();
+
             long size = files.Sum(f => f.Length);
 
             var filePaths = new List<string>();
             foreach (var formFile in files) {
                 if (formFile.Length > 0) {
-                    ExcelFileProcessor.ImportExcelFormFile(formFile);
+                     fileProc.ImportExcelFormFile(formFile);
                 }
             }
 

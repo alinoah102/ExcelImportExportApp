@@ -13,6 +13,10 @@ namespace DataLibrary.DALC {
 
 
     public class PersonDalc {
+
+
+
+
         public void PersonInsert(PersonModel model) {
 
             try {
@@ -38,9 +42,9 @@ namespace DataLibrary.DALC {
                              VALUES
                                    ('{model.FirstName}'
                                    ,'{model.LastName}'
-                                   ,1
+                                   ,{model.GenderID}
                                    ,'{model.DateOfBirth}'
-                                   ,1
+                                   ,{model.MaritalStatusID}
                                    ,'{model.EmailAddress}'
                                    ,'{model.StreetAddressLine1}'
                                    ,'{model.StreetAddressLine2}'
