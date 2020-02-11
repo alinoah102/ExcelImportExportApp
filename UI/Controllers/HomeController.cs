@@ -13,11 +13,21 @@ using Microsoft.Extensions.Configuration;
 namespace UI.Controllers {
     public class HomeController : Controller {
 
+
+        public IActionResult Index() {
+
+            return View("Login");
+        }
         
 
         public IActionResult Login() {
 
           
+            return RedirectToAction("AccountHomeBase");
+        }
+
+        public IActionResult AccountHomeBase() {
+
             return View();
         }
 

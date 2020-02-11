@@ -17,7 +17,7 @@ namespace UI.Controllers
         [HttpPost]
         public async Task<IActionResult> FileUploadIndex(List<IFormFile> files) {
 
-            // TO DO: AT LEAST VALIDATE FILE SIGNATURES MAN.. THIS IS WILD...
+            // TO DO: AT LEAST VALIDATE FILE SIGNATURES ...
 
             ExcelFileProcessor fileProc = new ExcelFileProcessor();
 
