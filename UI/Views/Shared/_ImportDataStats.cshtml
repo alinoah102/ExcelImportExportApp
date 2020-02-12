@@ -1,0 +1,31 @@
+﻿@model IEnumerable<UI.Models.PersonViewModel>
+
+
+
+@{
+    ViewData["Title"] = "Import Data Stats";
+}
+
+<button type="button" class="btn btn-primary" onclick="window.location='@Url.Action("ImportData", "Account")'" formmethod="get">Click Here To Navigate To Import Screen</button>
+
+<table class="table table-dark">
+    <thead>
+        <tr>
+            <th>Total Number Of Files Uploaded</th>
+            <th>Time Updated</th>
+            <th>Total Number of Records Uploaded</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row">5</th>
+            <td>12/2/1999 01:23:11</td>
+            <td>54002</td>
+        </tr>
+
+    </tbody>
+</table>
+
+
+
+
