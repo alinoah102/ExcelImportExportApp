@@ -27,7 +27,7 @@ namespace DataLibrary.BusinessLogicLayer.ExcelSheetProcessor {
 
         }
 
-        public void ImportExcelFormFile(IFormFile file) {
+        public IEnumerable<PersonModel> ImportExcelFormFile(IFormFile file) {
             
             Mapper mapper = new Mapper(file.OpenReadStream());
             IEnumerable<PersonModel> data = mapper.Take<PersonModel>("data").Select(x => x.Value);
@@ -35,8 +35,8 @@ namespace DataLibrary.BusinessLogicLayer.ExcelSheetProcessor {
             PersonHelperMethodsDalc personHelperDalc = new PersonHelperMethodsDalc();
             PersonDalc personDalc = new PersonDalc();
 
-            Dictionary<string, int> genderDict = personHelperDalc.GenderDictGet();
-            Dictionary<string, int> maritalStatusDict = personHelperDalc.MartitalStatusDictGet();
+            Dictionary<string, int> genderDict = personHelperDalc.GetGenderDictionary(); 
+            Dictionary<string, int> maritalStatusDict = personHelperDalc.GetMaritalStatusDictionary();
 
             foreach (PersonModel m in data) {
                 // Before Insert, map Gender/MaritalStatus names to IDs to match DB design
@@ -45,6 +45,8 @@ namespace DataLibrary.BusinessLogicLayer.ExcelSheetProcessor {
 
                 personDalc.PersonInsert(m);
             }
+
+            return data;
         }
 
         public ExcelWorksheet ExcelWorksheetGet(string path) {

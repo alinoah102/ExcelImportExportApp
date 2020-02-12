@@ -16,11 +16,6 @@ namespace UI.Controllers
             return View();
         }
 
-        public IActionResult ImportData() {
-
-
-            return View();
-        }
 
         public IActionResult SearchData() {
 
@@ -29,12 +24,6 @@ namespace UI.Controllers
             listModel.Add(new PersonViewModel { City= "test" });
 
             return PartialView("_SearchData", listModel);
-        }
-
-        public IActionResult ExportData() {
-
-
-            return View();
         }
 
         public IActionResult GetView(string viewName) {

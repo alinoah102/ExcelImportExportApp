@@ -15,7 +15,7 @@ namespace DataLibrary.DALC {
     public class PersonHelperMethodsDalc {
 
         // This method will reuturn key/value pairs of reverse db layout for performance purposes GenderName/GenderID
-        public Dictionary<string, int> GenderDictGet() {
+        public Dictionary<string, int> GetGenderDictionary() {
             try {
 
             IDbConnection db = new SqlConnection(DatabaseHelper.ConnectionStringGet());
@@ -33,8 +33,8 @@ namespace DataLibrary.DALC {
             return null;
         }
 
-        // This method will reuturn key/value pairs of reverse db layout for performance purposes MaritalStatusName/GenderName
-        public Dictionary<string, int> MartitalStatusDictGet() {
+        // This method will reuturn key/value pairs of reverse db layout for performance purposes MaritalStatusName/MaritalStatusID
+        public Dictionary<string, int> GetMaritalStatusDictionary() {
             try {
 
                 IDbConnection db = new SqlConnection(DatabaseHelper.ConnectionStringGet());
