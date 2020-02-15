@@ -1,0 +1,77 @@
+﻿@model UI.Models.SearchDataModel
+@{
+    ViewData["Title"] = "SearchData";
+    Layout = "~/Views/Shared/_SidenavLayout.cshtml";
+
+
+    var GenderList = new List<string>(Model.GenderTypes);
+    var MaritalStatusList = new List<string>(Model.MaritalStatusTypes);
+}
+
+@section Workspace {
+
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <h3 class="register-heading">Search For Person</h3>
+            <div class="row register-form">
+            @*Group one *@
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.EditorFor(m => m.Person.FirstName, new { htmlAttributes = new { @class = "form-control", @placeholder = Html.DisplayNameFor(m => m.Person.FirstName) } })
+                    </div>
+                    <div class="form-group">
+                        @Html.EditorFor(m => m.Person.LastName, new { htmlAttributes = new { @class = "form-control", @placeholder = Html.DisplayNameFor(m => m.Person.LastName) } })
+                    </div>
+                    <div class="form-group">
+                        @Html.EditorFor(m => m.Person.DateOfBirth, new { htmlAttributes = new { @class = "form-control", @placeholder = Html.DisplayNameFor(m => m.Person.DateOfBirth) } })
+                    </div>
+                    <div class="form-group">
+                        @Html.DropDownListFor(m =>
+                            m.Person.Gender,
+                            new SelectList(GenderList),
+                        "Select Gender", new { @class = "form-control" })
+                    </div>
+                    <div class="form-group">
+                        @Html.DropDownListFor(m =>
+                            m.Person.Gender,
+                            new SelectList(MaritalStatusList),
+                        "Select Marital Status", new { @class = "form-control" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.EditorFor(m => m.Person.EmailAddress, new { htmlAttributes = new { @class = "form-control", @placeholder = Html.DisplayNameFor(m => m.Person.EmailAddress) } })
+                    </div>
+                    
+                </div>
+
+            @*Group Two *@
+
+            <div class="col-md-6">
+
+                <div class="form-group">
+                    @Html.EditorFor(m => m.Person.StreetAddressLine1, new { htmlAttributes = new { @class = "form-control", @placeholder = Html.DisplayNameFor(m => m.Person.StreetAddressLine1) } })
+                </div>
+                <div class="form-group">
+                    @Html.EditorFor(m => m.Person.StreetAddressLine2, new { htmlAttributes = new { @class = "form-control", @placeholder = Html.DisplayNameFor(m => m.Person.StreetAddressLine2) } })
+                </div>
+                <div class="form-group">
+                    @Html.EditorFor(m => m.Person.City, new { htmlAttributes = new { @class = "form-control", @placeholder = Html.DisplayNameFor(m => m.Person.City) } })
+                </div>
+                <div class="form-group">
+                    @Html.EditorFor(m => m.Person.State, new { htmlAttributes = new { @class = "form-control", @placeholder = Html.DisplayNameFor(m => m.Person.State) } })
+                </div>
+                <div class="form-group">
+                    @Html.EditorFor(m => m.Person.Zip, new { htmlAttributes = new { @class = "form-control", @placeholder = Html.DisplayNameFor(m => m.Person.Zip) } })
+                </div>
+                <div class="form-group">
+                    @Html.EditorFor(m => m.Person.PhoneNumber, new { htmlAttributes = new { @class = "form-control", @placeholder = Html.DisplayNameFor(m => m.Person.PhoneNumber) } })
+                </div>
+            </div>
+
+            </div>
+        </div>
+    </div>
+}
+
+                    @* Body  *@

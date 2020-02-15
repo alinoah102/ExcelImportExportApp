@@ -33,6 +33,47 @@ namespace DataLibrary.DALC {
             return null;
         }
 
+        // This method will reuturn a lsit of genders
+        public List<string> GetGenderTypes() {
+            try {
+
+                IDbConnection db = new SqlConnection(DatabaseHelper.ConnectionStringGet());
+
+                List<string> genderTypes = db.Query<string>("Select GenderName FROM [dbo].[Gender]").ToList();
+
+                if (genderTypes != null) {
+                    return genderTypes;
+                }
+
+            }
+            catch (Exception e) {
+                // TO DO
+            }
+
+            return null;
+        }
+
+        // This method will a list of marital status types
+        public List<string> GetMaritalStatusTypes() {
+            try {
+
+                IDbConnection db = new SqlConnection(DatabaseHelper.ConnectionStringGet());
+
+                List<string> maritalStatusTypes = db.Query<string>("Select [MaritalStatusName] FROM [dbo].[MaritalStatus]").ToList();
+
+                if (maritalStatusTypes != null) {
+                    return maritalStatusTypes;
+                }
+
+            }
+            catch (Exception e) {
+                // TO DO
+            }
+
+            return null;
+
+        }
+
         // This method will reuturn key/value pairs of reverse db layout for performance purposes MaritalStatusName/MaritalStatusID
         public Dictionary<string, int> GetMaritalStatusDictionary() {
             try {

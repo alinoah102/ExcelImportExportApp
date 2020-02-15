@@ -20,16 +20,15 @@ namespace UI.Controllers {
         }
         
 
+
+        // authenticate here TODO
+
         public IActionResult Login() {
 
           
-            return RedirectToAction("AccountHomeBase");
+            return RedirectToAction("AccountHome", "Account");
         }
 
-        public IActionResult AccountHomeBase() {
-
-            return View();
-        }
 
         [HttpGet]
         public IActionResult Registration() {

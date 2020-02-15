@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DataLibrary.BusinessLogicLayer.ExcelSheetProcessor;
+using DataLibrary.DALC;
 using DataLibrary.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,30 +13,22 @@ namespace UI.Controllers
 {
     public class AccountController : Controller
     {
-        public IActionResult AccountIndex()
+        public IActionResult AccountHome()
         {
 
             return View();
         }
 
 
-        public IActionResult SearchData() {
-
-            List<PersonViewModel> listModel = new List<PersonViewModel>();
-
-            listModel.Add(new PersonViewModel { City= "test" });
-
-            return PartialView("_SearchData", listModel);
-        }
-
         public IActionResult GetView(string viewName) {
 
     
-
+            
 
             return PartialView(viewName);
         }
 
+      
         public IActionResult ImportData(ImportDataViewModel model) {
 
             model.PersonList = new List<PersonViewModel>();
@@ -44,11 +37,17 @@ namespace UI.Controllers
             return View(model);
         }
 
-        public IActionResult ImportDataStats(List<PersonViewModel> viewList) {
+        [HttpGet]
+        public IActionResult SearchData() {
 
-            // Process retriving data from database about user consumption and data upload
+            SearchDataModel model = new SearchDataModel ();
+            model.Person = new PersonViewModel();
 
-            return PartialView("_ImportDataStats");
+            PersonHelperMethodsDalc helperObject = new PersonHelperMethodsDalc();
+            model.GenderTypes = helperObject.GetGenderTypes();
+            model.MaritalStatusTypes = helperObject.GetMaritalStatusTypes();
+
+            return View(model);
         }
 
         [HttpPost]
