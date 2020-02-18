@@ -8,13 +8,94 @@ using System.Transactions;
 using Dapper;
 using System.Linq;
 using DataLibrary.Models;
-
-
+using System.Reflection;
+using Newtonsoft.Json;
 
 namespace DataLibrary.DALC {
     public class PersonHelperMethodsDalc {
 
-        // This method will reuturn key/value pairs of reverse db layout for performance purposes GenderName/GenderID
+        public List<PersonModel> ExecuteSearch(PersonModel data) {
+
+            // serialize object to json to check for null values before db call
+            var json = JsonConvert.SerializeObject(data);
+            Dictionary<string, string> dictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+            var cleanData = dictionary.Where(kvp => kvp.Value != null && kvp.Value != "0");
+           
+
+            string selectString = "SELECT ";
+            string whereString = "WHERE ";
+
+
+            var last = cleanData.Last();
+
+            foreach (var result in cleanData) {
+
+                if (!result.Equals(last)) {
+
+                    switch (result.Key) {
+                        // special cases for integers...
+                        case "GenderID":
+                            whereString += ($"[GenderID] = {result.Value} AND ");
+                            break;
+                        case "MaritalStatusID":
+                            whereString += ($"[MaritalStatusID] = {result.Value} AND ");
+                            break;
+                        
+                        default:
+                            whereString += ($"[{result.Key.ToString()}] = '{result.Value.ToString()}' AND ");
+                            break;
+                    }
+                    
+                } else {
+
+                    switch (result.Key) {
+                        // special cases
+                        case "Gender":
+                            whereString += ($"[GenderID] = {result.Value} AND ");
+                            break;
+                        case "MaritalStatus":
+                            whereString += ($"[MaritalStatusID] = {result.Value} AND ");
+                            break;
+
+                        default:
+                            whereString += ($"[{result.Key.ToString()}] = '{result.Value.ToString()}'");
+                            break;
+                    }
+                }
+            }
+
+            string sqlCommand = $@"{selectString} 
+                                 [PersonID]
+                                ,[FirstName]
+                                ,[LastName]
+                                ,[GenderID]
+                                ,[DateOfBirth]
+                                ,[MaritalStatusID]
+                                ,[EmailAddress]
+                                ,[StreetAddressLine1]
+                                ,[StreetAddressLine2]
+                                ,[PhoneNumber]
+                                ,[City]
+                                ,[State]
+                                ,[Zip]
+                                FROM [dbo].[Person] {whereString}";
+
+            try {
+
+                IDbConnection db = new SqlConnection(DatabaseHelper.ConnectionStringGet());
+                List<PersonModel> result = db.Query<PersonModel>(sqlCommand).ToList();
+
+                return result;
+            }
+            catch (Exception e) {
+                // TO DO
+            }
+                
+            return null;
+
+        }
+
+        // This method will reuturn key/value pairs of reverse db layout for performance purposes GenderName/GenderID O(1)
         public Dictionary<string, int> GetGenderDictionary() {
             try {
 
@@ -33,46 +114,6 @@ namespace DataLibrary.DALC {
             return null;
         }
 
-        // This method will reuturn a lsit of genders
-        public List<string> GetGenderTypes() {
-            try {
-
-                IDbConnection db = new SqlConnection(DatabaseHelper.ConnectionStringGet());
-
-                List<string> genderTypes = db.Query<string>("Select GenderName FROM [dbo].[Gender]").ToList();
-
-                if (genderTypes != null) {
-                    return genderTypes;
-                }
-
-            }
-            catch (Exception e) {
-                // TO DO
-            }
-
-            return null;
-        }
-
-        // This method will a list of marital status types
-        public List<string> GetMaritalStatusTypes() {
-            try {
-
-                IDbConnection db = new SqlConnection(DatabaseHelper.ConnectionStringGet());
-
-                List<string> maritalStatusTypes = db.Query<string>("Select [MaritalStatusName] FROM [dbo].[MaritalStatus]").ToList();
-
-                if (maritalStatusTypes != null) {
-                    return maritalStatusTypes;
-                }
-
-            }
-            catch (Exception e) {
-                // TO DO
-            }
-
-            return null;
-
-        }
 
         // This method will reuturn key/value pairs of reverse db layout for performance purposes MaritalStatusName/MaritalStatusID
         public Dictionary<string, int> GetMaritalStatusDictionary() {

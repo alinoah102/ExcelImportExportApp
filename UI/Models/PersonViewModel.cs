@@ -21,17 +21,22 @@ namespace UI.Models {
         [DataType(DataType.Date)]
         public string DateOfBirth { get; set; }
 
-        [DisplayName("Gender")]
-        public string Gender { get; set; }
+        public int GenderID { get; set; }
 
         [DisplayName("Marital Status")]
         public string MaritalStatus { get; set; }
+
+        [DisplayName("Gender")]
+        public string Gender { get; set; }
+
+        public int MaritalStatusID { get; set; }
 
         [DisplayName("Email Address")]
         [DataType(DataType.EmailAddress)]
         public string EmailAddress { get; set; }
 
         [DisplayName("Phone Number")]
+        [DataType(DataType.PhoneNumber)]
         public string PhoneNumber { get; set; }
 
         [DisplayName("Address Line 1")]
@@ -53,12 +58,12 @@ namespace UI.Models {
 
         public static implicit operator PersonViewModel(PersonModel person) {
             return new PersonViewModel {
-                PersonID = person.ID,
+                PersonID = person.PersonID,
                 FirstName = person.FirstName,
                 LastName = person.LastName,
-                Gender = person.Gender,
+                GenderID = person.GenderID,
                 DateOfBirth = person.DateOfBirth,
-                MaritalStatus = person.MaritalStatus,
+                MaritalStatusID = person.MaritalStatusID,
                 EmailAddress = person.EmailAddress,
                 StreetAddressLine1 = person.StreetAddressLine1,
                 StreetAddressLine2 = person.StreetAddressLine2,
@@ -71,12 +76,12 @@ namespace UI.Models {
 
         public static implicit operator PersonModel(PersonViewModel vm) {
             return new PersonModel {
-                ID = vm.PersonID,
+                PersonID = vm.PersonID,
                 FirstName = vm.FirstName,
                 LastName = vm.LastName,
-                Gender = vm.Gender,
+                GenderID = vm.GenderID,
                 DateOfBirth = vm.DateOfBirth,
-                MaritalStatus = vm.MaritalStatus,
+                MaritalStatusID = vm.MaritalStatusID,
                 EmailAddress = vm.EmailAddress,
                 StreetAddressLine1 = vm.StreetAddressLine1,
                 StreetAddressLine2 = vm.StreetAddressLine2,

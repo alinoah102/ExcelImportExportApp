@@ -51,14 +51,27 @@
     </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    @RenderSection("Scripts", required: false)
+    <script src="~/js/_SearchPersonScripts.js"></script>
+    @RenderSection("Scripts", required: true)
 </body>
 </html>
 
 <!-- Menu Toggle Script -->
 <script>
+    debugger;
+     
+
     $("#menu-toggle").click(function (e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
-    });</script>
+    });
+
+    
+    $('#Import').click(function (e) {
+        $('.collapse').collapse('show');
+    }).delay(3000);
+ 
+    
+
+</script>
 

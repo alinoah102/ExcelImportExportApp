@@ -10,6 +10,7 @@ namespace UI.Models {
 
         public UploadStatsViewModel UploadStats { get; set; }
 
+        public bool ViewData { get; set; }
 
 
     }
