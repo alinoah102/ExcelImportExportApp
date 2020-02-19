@@ -26,7 +26,7 @@ namespace DataLibrary.DALC {
             string whereString = "WHERE ";
 
 
-            var last = cleanData.Last();
+            var last = cleanData.LastOrDefault();
             
 
             foreach (var result in cleanData) {

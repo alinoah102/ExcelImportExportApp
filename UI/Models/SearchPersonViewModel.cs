@@ -31,5 +31,7 @@ namespace UI.Models {
             }
         }
 
+        public int NumberOfRecordsRetrieved { get; set; }
+
     }
 }

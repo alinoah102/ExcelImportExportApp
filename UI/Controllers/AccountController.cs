@@ -11,23 +11,21 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using UI.Models;
 
-namespace UI.Controllers
-{
-    public class AccountController : Controller
-    {
-        public IActionResult AccountHome()
-        {
+namespace UI.Controllers {
+    public class AccountController : Controller {
+        public IActionResult AccountHome() {
 
             return View();
         }
-        
+
         [HttpPost]
-        public IActionResult DeletePerson(int id) {
+        public IActionResult DeletePerson(string json) {
 
+            var personId = JsonConvert.DeserializeObject<int>(json);
             PersonDalc personOperation = new PersonDalc();
-            personOperation.PersonDelete(id);
+            personOperation.PersonDelete(personId);
 
-            return View();
+            return Json(new { success = true/*, responseText = "Your message successfuly sent!"*/ });
         }
 
         [AcceptVerbs("POST")]
@@ -46,7 +44,7 @@ namespace UI.Controllers
         public IActionResult UpdatePerson(string json) {
 
             PersonViewModel personViewModelNew = JsonConvert.DeserializeObject<PersonViewModel>(json);
-            
+
             PersonDalc personOperation = new PersonDalc();
             PersonHelperMethodsDalc helperMethods = new PersonHelperMethodsDalc();
 
@@ -63,7 +61,7 @@ namespace UI.Controllers
             return Json(new { success = true/*, responseText = "Your message successfuly sent!"*/ });
         }
 
-      
+
         [HttpGet]
         public IActionResult ImportData(ImportDataViewModel model) {
 
@@ -76,7 +74,7 @@ namespace UI.Controllers
         [HttpGet]
         public IActionResult SearchData() {
 
-            SearchPersonViewModel model = new SearchPersonViewModel ();
+            SearchPersonViewModel model = new SearchPersonViewModel();
             model.Person = new PersonViewModel();
 
             PersonHelperMethodsDalc helper = new PersonHelperMethodsDalc();
@@ -111,14 +109,14 @@ namespace UI.Controllers
 
             personSearchSample = model.Person;
 
-            if(model.Person.Gender != null) {
+            if (model.Person.Gender != null) {
                 personSearchSample.GenderID = genderDict[model.Person.Gender];
             }
 
             if (model.Person.MaritalStatus != null) {
                 personSearchSample.MaritalStatusID = maritalStatusDict[model.Person.MaritalStatus];
             }
-          
+
             List<PersonModel> searchExecutionResults = helper.ExecuteSearch(personSearchSample);
 
             // reverse dictionaries for faster O(1) lookup
@@ -127,16 +125,17 @@ namespace UI.Controllers
 
             // get gender and marital status strings
 
-            if(personSearchSample.GenderID != 0) {
+            if (personSearchSample.GenderID != 0) {
                 genderName = reversedGenderDict[personSearchSample.GenderID];
             }
-            if(personSearchSample.MaritalStatusID != 0) {
+            if (personSearchSample.MaritalStatusID != 0) {
                 maritalStatusName = reversedMaritalStatusDict[personSearchSample.MaritalStatusID];
             }
 
             int count = 0;
-            foreach(PersonModel person in searchExecutionResults) {
+            foreach (PersonModel person in searchExecutionResults) {
 
+                // limit how many we get for now, or we can implement pages
                 count++;
                 if (count == 25) {
                     break;
@@ -150,12 +149,13 @@ namespace UI.Controllers
             }
 
             model.SearchResults = listPersonViewModel;
+            model.NumberOfRecordsRetrieved = listPersonViewModel.Count;
 
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult FileUpload(List<IFormFile> files, ImportDataViewModel model){
+        public IActionResult FileUpload(List<IFormFile> files, ImportDataViewModel model) {
 
             model.PersonList = new List<PersonViewModel>();
             model.UploadStats = new UploadStatsViewModel();
@@ -177,13 +177,13 @@ namespace UI.Controllers
                     }
                 }
 
-                // break after 100.. silly way to do this. just use for loop..
+                // break after 100.. silly way to do this. just use a for loop..
 
                 int count = 0;
                 foreach (var person in table) {
 
                     count++;
-                    if(count == 25) {
+                    if (count == 25) {
                         break;
                     }
 
@@ -209,8 +209,9 @@ namespace UI.Controllers
 
                 model.UploadStats.NumberOfRecords = table.Count();
                 model.UploadStats.FileName = files[0].FileName;
-      
-            }catch(Exception e) {
+
+            }
+            catch (Exception e) {
                 // TO DO
             }
 
@@ -218,3 +219,4 @@ namespace UI.Controllers
         }
     }
 }
+

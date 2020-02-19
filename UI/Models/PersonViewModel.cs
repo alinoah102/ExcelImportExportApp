@@ -92,9 +92,6 @@ namespace UI.Models {
             };
         }
 
-        public enum PersonFields {
-
-        }
     }
 
     

@@ -30,6 +30,17 @@ var City_MODAL_BOX;
 var PhoneNumber_MODAL_BOX;
 var State_MODAL_BOX; 
 var Zip_MODAL_BOX;
+
+
+
+
+$(".delete-row-icon").click(function (e) {
+    row = $(this).closest('tr');
+
+    PersonID = $(row).attr("id");
+});
+
+
  
 
     $(".modal-edit-button").click(function (e) {
@@ -124,7 +135,7 @@ $("#update").click(function () {
         success: function (response) {
             if (response.success) {
 
-                $(row).fadeOut(250).fadeIn(250);
+                //$(row).fadeOut(250).fadeIn(250);
 
                 $(PersonID).text($(PersonID_MODAL_BOX).prop("value"));
                 $(FirstName).text($(FirstName_MODAL_BOX).prop("value"));
@@ -139,6 +150,14 @@ $("#update").click(function () {
                 $(PhoneNumber).text($(PhoneNumber_MODAL_BOX).prop("value"));
                 $(State).text($(State_MODAL_BOX).prop("value"));
                 $(Zip).text($(Zip_MODAL_BOX).prop("value"));
+
+                var myRow = $(row);
+
+                myRow.addClass('update-row-success');
+
+                setTimeout(function () {
+                    myRow.removeClass('update-row-success');
+                }, 200);
 
 
                 // alert("made it");
@@ -181,19 +200,65 @@ $("#update").click(function () {
             success: function (response) {
                 if (response.success) {
 
-                    $(row).css('background-color', 'green');
-                    $(row).fadeOut(250).fadeIn(250);
 
+                  
 
-                    // alert("made it");
-                } else {
+                }
+                else {
                     // DoSomethingElse()
                     alert("didnt make it")
                 }
-            },
+            } ,
             error: function (response) {
                 alert("error!");  // 
             }
         });
+
+
     });
 
+   
+
+        $("#YesDelete").click(function () {
+
+            
+
+            jsonData = PersonID.replace("PersonID-", "");
+
+            $.ajax({
+                type: "POST",
+                url: '/Account/DeletePerson',
+                data: { json: jsonData },
+                datatype: "text",
+                success: function (response) {
+                    if (response.success) {
+
+                        var myRow = $(row);
+
+                        myRow.addClass('delete-row-success');
+
+                        $(".delete-row-success").fadeOut(400, function () {
+                            $(myRow).remove();
+                        });
+                        
+                        // alert("made it");
+                    } else {
+                        // DoSomethingElse()
+                        alert("didnt make it")
+                    }
+                },
+                error: function (response) {
+                    alert("error!");  // 
+                }
+            });
+
+        });
+
+
+$(".result-message-box").fadeOut(15000, function () {
+    $(".result-message-box").remove();
+});
+
+//setTimeout(function () {
+//    $('.collapse').collapse('hide');
+//}, 2000);
