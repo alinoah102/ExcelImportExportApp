@@ -27,6 +27,7 @@ namespace DataLibrary.DALC {
 
 
             var last = cleanData.Last();
+            
 
             foreach (var result in cleanData) {
 

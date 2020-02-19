@@ -75,17 +75,15 @@ namespace DataLibrary.BusinessLogicLayer.ExcelSheetProcessor {
             return data;
         }
 
-        public ExcelWorksheet ExcelWorksheetGet(string path) {
+        public void ExportToExcel(string jsonString) {
             try {
-                // Load Excel file.
-                var workbook = ExcelFile.Load(path);
+                var mapper = new Mapper();
+                mapper.Save("test.xlsx", jsonString, "newSheet", overwrite: true);
 
-                // Select active worksheet from the file.
-                var worksheet = workbook.Worksheets.ActiveWorksheet;
 
-                return worksheet;
-            }catch(Exception e) {
-                return null;
+            }
+            catch(Exception e) {
+               
 
                 // TO DO
             }

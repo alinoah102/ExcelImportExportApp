@@ -56,6 +56,58 @@ namespace DataLibrary.DALC {
 
         }
 
+        public void PersonDelete(int personId) {
+            try {
+                IDbConnection db = new SqlConnection(DatabaseHelper.ConnectionStringGet());
+                using (TransactionScope scope = new TransactionScope()) {
+                    var result = db.Execute($@"
+                          DELETE FROM [dbo].[Person]
+                          WHERE  PersonID = {personId}
+                          
+                    ");
+                    scope.Complete();
+                }
+            }
+            catch (TransactionAbortedException ex) {
+                // TO DO...
+            }
+
+        }
+
+
+        public void PersonUpdate(PersonModel model) {
+            try {
+                IDbConnection db = new SqlConnection(DatabaseHelper.ConnectionStringGet());
+                using (TransactionScope scope = new TransactionScope()) {
+                    var result = db.Execute($@"
+                          UPDATE [dbo].[Person]
+                                   
+                          SET       FirstName = '{model.FirstName}'
+                                   ,LastName = '{model.LastName}'
+                                   ,GenderID = {model.GenderID}
+                                   ,DateOfBirth = '{model.DateOfBirth}'
+                                   ,MaritalStatusID = {model.MaritalStatusID}
+                                   ,EmailAddress = '{model.EmailAddress}'
+                                   ,StreetAddressLine1 = '{model.StreetAddressLine1}'
+                                   ,StreetAddressLine2 = '{model.StreetAddressLine2}'
+                                   ,PhoneNumber = '{model.PhoneNumber}'
+                                   ,City = '{model.City}'
+                                   ,State = '{model.State}'
+                                   ,Zip = '{model.Zip}'
+
+                          WHERE     PersonID = {model.PersonID}
+                          
+                    ");
+                    scope.Complete();
+                }
+
+            }
+            catch (TransactionAbortedException ex) {
+                // TO DO...
+            }
+
+        }
+    
 
         public void PersonInsert(PersonModel model) {
 
@@ -97,7 +149,7 @@ namespace DataLibrary.DALC {
 
             }
             catch (TransactionAbortedException ex) {
-                // TO DO
+                // TO DO...
             }
 
         }

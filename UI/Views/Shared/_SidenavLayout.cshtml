@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - Demo App</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/side-nav.css" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
 
 </head>
 <body>
@@ -16,12 +17,12 @@
         <div class="bg-light border-right" id="sidebar-wrapper">
             <div class="sidebar-heading">Kopis Demo </div>
             <div class="list-group list-group-flush">
-                <a  id="Home"     class="list-group-item list-group-item-action bg-light" asp-controller="Account" asp-action="AccountHome">Home</a>
-                <a  id="Import"   class="list-group-item list-group-item-action bg-light" asp-controller="Account" asp-action="ImportData">Import Data</a>
-                <a  id="Search"   class="list-group-item list-group-item-action bg-light" asp-controller="Account" asp-action="SearchData">Search</a>
-                <a  id="Charts"   class="list-group-item list-group-item-action bg-light" asp-controller="Account" asp-action="Charts">Charts</a>
+                <a id="Home" class="list-group-item list-group-item-action bg-light" asp-controller="Account" asp-action="AccountHome">Home</a>
+                <a id="Import" class="list-group-item list-group-item-action bg-light" asp-controller="Account" asp-action="ImportData">Import Data</a>
+                <a id="Search" class="list-group-item list-group-item-action bg-light" asp-controller="Account" asp-action="SearchData">Search</a>
+                <a id="Charts" class="list-group-item list-group-item-action bg-light" asp-controller="Account" asp-action="Charts">Charts</a>
                 <a href="#" id="Settings" class="list-group-item list-group-item-action bg-light">Logout</a>
-                <a href="#" id="Logout"   class="list-group-item list-group-item-action bg-light">Status</a>
+                <a href="#" id="Logout" class="list-group-item list-group-item-action bg-light">Status</a>
             </div>
         </div>
         <!-- /#sidebar-wrapper -->
@@ -29,49 +30,50 @@
         <div id="page-content-wrapper">
             <nav class="navbar navbar-light bg-light border-bottom">
                 <button class="navbar-toggler" type="button" id="menu-toggle">
-                    <span class="navbar-toggler-icon"></span>
+                    <i class="fas fa-chevron-down rotate"></i>
                 </button>
 
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="true" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+                    <i class="fas fa-chevron-down"></i>
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-                       @RenderSection("Workspace")
+                    <ul class="navbar-nav ml-auto mt-2 mt-lg-0 ">
+                        @RenderSection("Workspace")
                     </ul>
                 </div>
             </nav>
             <div class="container-fluid">
                 @RenderBody()
             </div>
+
+  
+
         </div>
         <!-- /#page-content-wrapper -->
 
     </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/_SearchPersonScripts.js"></script>
+    <script src="~/js/search-person-scripts.js"></script>
     @RenderSection("Scripts", required: true)
 </body>
 </html>
 
 <!-- Menu Toggle Script -->
 <script>
-    debugger;
-     
-
+    
+    
     $("#menu-toggle").click(function (e) {
         e.preventDefault();
+        $(".rotate").toggleClass("down");
         $("#wrapper").toggleClass("toggled");
     });
 
     
-    $('#Import').click(function (e) {
-        $('.collapse').collapse('show');
-    }).delay(3000);
- 
-    
+    $(window).on('load', function () {
+         $('.collapse').collapse('show');
+    })
 
 </script>
 

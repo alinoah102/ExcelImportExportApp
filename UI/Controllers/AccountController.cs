@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using DataLibrary.BusinessLogicLayer.ExcelSheetProcessor;
 using DataLibrary.DALC;
 using DataLibrary.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using UI.Models;
 
 namespace UI.Controllers
@@ -18,23 +20,51 @@ namespace UI.Controllers
 
             return View();
         }
-
-
+        
         [HttpPost]
-        public IActionResult UpdatePerson(SearchPersonViewModel model) {
+        public IActionResult DeletePerson(int id) {
 
-            return null;
+            PersonDalc personOperation = new PersonDalc();
+            personOperation.PersonDelete(id);
+
+            return View();
         }
 
-        public IActionResult GetView(string viewName) {
+        [AcceptVerbs("POST")]
+        public IActionResult ExportPerson(string json) {
 
-    
+
+            ExcelFileProcessor fileProc = new ExcelFileProcessor();
+
+            fileProc.ExportToExcel(json);
+            return Json(new { success = true/*, responseText = "Your message successfuly sent!"*/ });
+
+        }
+
+        [HttpPost]
+        [AcceptVerbs("Post")]
+        public IActionResult UpdatePerson(string json) {
+
+            PersonViewModel personViewModelNew = JsonConvert.DeserializeObject<PersonViewModel>(json);
             
+            PersonDalc personOperation = new PersonDalc();
+            PersonHelperMethodsDalc helperMethods = new PersonHelperMethodsDalc();
 
-            return PartialView(viewName);
+            Dictionary<string, int> genderDict = helperMethods.GetGenderDictionary();
+            Dictionary<string, int> maritalStatusDict = helperMethods.GetMaritalStatusDictionary();
+
+            PersonModel person = new PersonModel();
+            person = personViewModelNew;
+            person.GenderID = genderDict[personViewModelNew.Gender];
+            person.MaritalStatusID = maritalStatusDict[personViewModelNew.MaritalStatus];
+
+            personOperation.PersonUpdate(person);
+
+            return Json(new { success = true/*, responseText = "Your message successfuly sent!"*/ });
         }
 
       
+        [HttpGet]
         public IActionResult ImportData(ImportDataViewModel model) {
 
             model.PersonList = new List<PersonViewModel>();
@@ -88,10 +118,6 @@ namespace UI.Controllers
             if (model.Person.MaritalStatus != null) {
                 personSearchSample.MaritalStatusID = maritalStatusDict[model.Person.MaritalStatus];
             }
-
-            
-        
-           
           
             List<PersonModel> searchExecutionResults = helper.ExecuteSearch(personSearchSample);
 
@@ -107,8 +133,15 @@ namespace UI.Controllers
             if(personSearchSample.MaritalStatusID != 0) {
                 maritalStatusName = reversedMaritalStatusDict[personSearchSample.MaritalStatusID];
             }
-            
+
+            int count = 0;
             foreach(PersonModel person in searchExecutionResults) {
+
+                count++;
+                if (count == 25) {
+                    break;
+                }
+
                 PersonViewModel newViewModel = new PersonViewModel();
                 newViewModel = person;
                 newViewModel.Gender = reversedGenderDict[person.GenderID];
@@ -124,7 +157,6 @@ namespace UI.Controllers
         [HttpPost]
         public IActionResult FileUpload(List<IFormFile> files, ImportDataViewModel model){
 
-            //ImportDataViewModel model = new ImportDataViewModel();
             model.PersonList = new List<PersonViewModel>();
             model.UploadStats = new UploadStatsViewModel();
 
@@ -145,8 +177,16 @@ namespace UI.Controllers
                     }
                 }
 
-                
+                // break after 100.. silly way to do this. just use for loop..
+
+                int count = 0;
                 foreach (var person in table) {
+
+                    count++;
+                    if(count == 25) {
+                        break;
+                    }
+
 
                     PersonViewModel viewPerson = new PersonViewModel();
 
@@ -175,9 +215,6 @@ namespace UI.Controllers
             }
 
             return View("ImportData", model);
-
-            // return RedirectToAction("ImportData", viewList);
         }
-
     }
 }

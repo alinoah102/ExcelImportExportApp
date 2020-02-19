@@ -91,6 +91,10 @@ namespace UI.Models {
                 Zip = vm.Zip
             };
         }
+
+        public enum PersonFields {
+
+        }
     }
 
     

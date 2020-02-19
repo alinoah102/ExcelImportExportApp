@@ -56,3 +56,45 @@ body {
 .navbar-nav {
     margin-top: 2em !important;
 }
+
+.rotate {
+    -moz-transition: all 0.2s linear;
+    -webkit-transition: all 0.2s linear;
+    transition: all 0.2s linear;
+}
+
+    .rotate.down {
+        -moz-transform: rotate(180deg);
+        -webkit-transform: rotate(180deg);
+        transform: rotate(180deg);
+    }
+
+#ExportSearchResults {
+    background-color: forestgreen;
+}
+
+.table th.fit {
+    white-space: nowrap;
+    width: 1%;
+}
+
+/* layout.css Style */
+.upload-drop-zone {
+    height: 200px;
+    border-width: 2px;
+    margin-bottom: 20px;
+}
+
+/* skin.css Style*/
+.upload-drop-zone {
+    color: #ccc;
+    border-style: dashed;
+    border-color: #ccc;
+    line-height: 200px;
+    text-align: center
+}
+
+    .upload-drop-zone.drop {
+        color: #222;
+        border-color: #222;
+    }
