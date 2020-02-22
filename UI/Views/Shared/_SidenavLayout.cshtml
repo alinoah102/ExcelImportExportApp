@@ -19,7 +19,7 @@
             <div class="list-group list-group-flush">
                 <a id="Home" class="list-group-item list-group-item-action bg-light" asp-controller="Account" asp-action="AccountHome">Home</a>
                 <a id="Import" class="list-group-item list-group-item-action bg-light" asp-controller="Account" asp-action="ImportData">Import</a>
-                <a id="Search" class="list-group-item list-group-item-action bg-light" asp-controller="Account" asp-action="SearchData">Search</a>
+                <a id="Search" class="list-group-item list-group-item-action bg-light" asp-controller="Account" asp-action="SearchData">Table View</a>
                 <a id="Charts" class="list-group-item list-group-item-action bg-light" asp-controller="Account" asp-action="Charts">Charts</a>
                 <a href="#" id="Logout" class="list-group-item list-group-item-action bg-light">Status</a>
                 <a href="#" id="Settings" class="list-group-item list-group-item-action bg-light">Logout</a>
@@ -45,9 +45,18 @@
             </nav>
             <div class="container-fluid">
                 @RenderBody()
+
+                <div aria-live="assertive" aria-atomic="true" @*class="feedback-container"*@>
+                    <!-- Position it -->
+                    <div style="position: absolute; top: 0; right: 0;" id="FeedbackTemplate">
+
+
+                    </div>
+                </div>
             </div>
 
-  
+
+
 
         </div>
         <!-- /#page-content-wrapper -->
@@ -56,6 +65,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/search-person-scripts.js"></script>
+    <script src="~/js/jquery.tabletojson.min.js"></script>
     @RenderSection("Scripts", required: true)
 </body>
 </html>

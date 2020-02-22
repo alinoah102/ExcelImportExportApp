@@ -137,6 +137,45 @@ namespace DataLibrary.DALC {
         }
 
 
+       
+         public List<PersonModel> RetrieveData(int numOfRows = 25) {
+            try {
+
+                IDbConnection db = new SqlConnection(DatabaseHelper.ConnectionStringGet());
+
+                List<PersonModel> results = db.Query<PersonModel>($@"
+                        SELECT TOP {numOfRows} 
+                              [PersonID]
+                                ,[FirstName]
+                                ,[LastName]
+                                ,[GenderID]
+                                ,[DateOfBirth]
+                                ,[MaritalStatusID]
+                                ,[EmailAddress]
+                                ,[StreetAddressLine1]
+                                ,[StreetAddressLine2]
+                                ,[PhoneNumber]
+                                ,[City]
+                                ,[State]
+                                ,[Zip]
+                                FROM [dbo].[Person]
+                    ").ToList();
+
+                if (results != null) {
+                    return results;
+                }
+
+            }
+            catch (Exception e) {
+                // TO DO
+            }
+
+            return null;
+        }
+
+
+
+
 
     }
 }

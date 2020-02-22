@@ -14,166 +14,46 @@
 @section Workspace {
 
 
-   
 
 
-    <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-            <h1>Search For Person</h1>
-            @using (Html.BeginForm("SearchData", "Account", FormMethod.Post)) {
-                <div class="row register-form">
-                    @*Group one *@
+    <div class="btn-toolbar">
+        <div class="btn-group">
 
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.EditorFor(m => m.Person.FirstName, new { htmlAttributes = new { @class = "form-control", @id = "FirstName_SEARCH_ID", @placeholder = Html.DisplayNameFor(m => m.Person.FirstName) } })
-                        </div>
+            <a class="btn" asp-action="RetrieveData" asp-controller="Account">
+                <i class="fas fa-sync-alt"></i>
+            </a>
 
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.EditorFor(m => m.Person.LastName, new { htmlAttributes = new { @class = "form-control", @id = "LastName_SEARCH_ID", @placeholder = Html.DisplayNameFor(m => m.Person.LastName) } })
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            @Html.DropDownListFor(m =>
-                         m.Person.Gender,
-                         new SelectList(GenderList),
-                         "Select Gender", new { @class = "form-control", @id = "Gender_SEARCH_ID" })
-                        </div>
-
-                    </div>
+            <button id="myBtn" class="btn modal-edit-button" data-title="Edit" data-toggle="modal" data-target="#edit">
+                <i class="fas fa-user-edit"></i>
+            </button>
 
 
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            @Html.DropDownListFor(m =>
-                         m.Person.MaritalStatus,
-                         new SelectList(MaritalStatusList),
-                     "Select Marital Status", new { @class = "form-control", @id = "MaritalStatus_SEARCH_ID" })
-                        </div>
-                    </div>
+            <button class="btn" data-original-title="Bold - Ctrl+B" data-toggle="modal" data-target="#SearchModal"><i class="fas fa-search"></i></button>
 
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            @Html.EditorFor(m => m.Person.DateOfBirth, new { htmlAttributes = new { @class = "form-control", @id = "DOB_SEARCH_ID", @placeholder = Html.DisplayNameFor(m => m.Person.DateOfBirth) } })
-                        </div>
+        </div>
+        <div class="btn-group">
+            <button class="btn" data-toggle="modal" data-target="#AddNewPerson"><i class="fas fa-user-plus"></i></button>
 
-                    </div>
+        </div>
+        <div class="btn-group">
 
+            <button class="btn" id="ExportIcon"><i class="fas fa-file-export"></i></button>
+            
 
-                </div>
+            <button class="btn delete-row-icon" data-title="Delete" data-toggle="modal" data-target="#delete">
+                <i class="fas fa-user-minus"></i>
+            </button>
 
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            @Html.EditorFor(m => m.Person.StreetAddressLine1, new { htmlAttributes = new { @class = "form-control", @id = "StreetAddressLine1_SEARCH_ID", @placeholder = Html.DisplayNameFor(m => m.Person.StreetAddressLine1) } })
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            @Html.EditorFor(m => m.Person.StreetAddressLine2, new { htmlAttributes = new { @class = "form-control", @id = "StreetAddressLine2_SEARCH_ID", @placeholder = Html.DisplayNameFor(m => m.Person.StreetAddressLine2) } })
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            @Html.EditorFor(m => m.Person.PhoneNumber, new { htmlAttributes = new { @class = "form-control", @id = "PhoneNumber_SEARCH_ID", @placeholder = Html.DisplayNameFor(m => m.Person.PhoneNumber) } })
-                        </div>
-                    </div>
-
-
-                </div>
-
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            @Html.EditorFor(m => m.Person.EmailAddress, new { htmlAttributes = new { @class = "form-control", @id = "EmailAddress_SEARCH_ID", @placeholder = Html.DisplayNameFor(m => m.Person.EmailAddress) } })
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            @Html.EditorFor(m => m.Person.City, new { htmlAttributes = new { @class = "form-control", @id = "City_SEARCH_ID", @placeholder = Html.DisplayNameFor(m => m.Person.City) } })
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            @Html.DropDownListFor(m =>
-                            m.Person.State,
-                             new SelectList(States),
-                            "Select State", new { @class = "form-control", @id = "State_SEARCH_ID" })
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            @Html.EditorFor(m => m.Person.Zip, new { htmlAttributes = new { @class = "form-control", @id = "Zip_SEARCH_ID", @placeholder = Html.DisplayNameFor(m => m.Person.Zip) } })
-                        </div>
-                    </div>
-
-                </div>
-
-                @* Group Two *@
-
-                <div class="col-md-4">
-
-
-
-
-
-
-
-                </div>
-
-                @*Group Three *@
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <button class="btn btn-info form-control" type="submit">Search</button>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <button class="btn btn-primary form-control" id="ExportSearchResults" type="submit">Export</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col"></div>
-
-                </div>
-
-                @if (NumOfRecords > 0) {
-                    <div class="notice notice-success result-message-box">
-                        <strong>Notice</strong> Completion Time: @DateTime.Now (@NumOfRecords Records Retrieved)
-                    </div>
-                 }
-
-
-
-
-
-            }
         </div>
     </div>
+
+
+
 }
 
 @* Body  *@
 
 @if (Model.SearchResults != null) {
-
-
 
     <div class="">
         <div class="row">
@@ -181,7 +61,7 @@
             <div class="table-responsive">
 
 
-                <table id="myTable" class="table table-bordred table-striped table-sm">
+                <table id="myTable" class="table table-bordred table-sm">
 
                     <thead class="thead-light text-nowrap">
 
@@ -198,8 +78,6 @@
                     <th>City</th>
                     <th>State</th>
                     <th>Zip</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
 
 
                     </thead>
@@ -245,32 +123,6 @@
                                 <td id="Zip_HTML_ID">
                                     @Html.DisplayFor(modelItem => item.Zip)
                                 </td>
-                                <td>
-                                    <div class="row align-content-center">
-                                        <div class="col-md-12">
-
-                                            <button id="myBtn" class="btn btn-primary btn-xs modal-edit-button" data-title="Edit" data-toggle="modal" data-target="#edit">
-                                                <i class="fas fa-user-edit"></i>
-                                            </button>
-
-                                        </div>
-
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="row align-content-center">
-                                        <div class="col-md-12">
-
-                                            <button class="btn btn-danger btn-xs delete-row-icon" data-title="Delete" data-toggle="modal" data-target="#delete">
-                                                <i class="fas fa-user-minus"></i>
-                                            </button>
-
-                                        </div>
-                                    </div>
-
-                                </td>
-
-
                             </tr>
                         }
                     </tbody>
@@ -281,6 +133,8 @@
         </div>
 
     </div>
+
+    @* EDIT MODAL *@
 
     <!-- Modal -->
     <div class="modal fade bd-example-modal-lg" id="myModal" role="dialog">
@@ -384,6 +238,253 @@
 
 }
 
+@* ADD MODAL *@
+
+
+<!-- Modal -->
+<div class="modal fade bd-example-modal-lg" id="AddNewPerson" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add New Person</h4>
+            </div>
+            <div class="modal-body">
+
+                <form>
+                    <div class="row">
+                        @*Group one *@
+                        <input class="form-control text-box single-line d-none" id="MODAL_ID_NEW_PERSON" placeholder="" type="text">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <input class="form-control text-box single-line" id="FirstName_MODAL_ID_NEW_PERSON" placeholder="First Name" type="text">
+                            </div>
+
+                            <div class="form-group">
+                                <input class="form-control text-box single-line" id="LastName_MODAL_ID_NEW_PERSON" placeholder="Last Name" type="text">
+                            </div>
+
+                            <div class="form-group">
+                                @Html.DropDownList("Gender_MODAL_ID_NEW_PERSON",
+                             new SelectList(GenderList),
+                             "Select Gender", new { @class = "form-control" })
+                            </div>
+
+                            <div class="form-group">
+                                <input class="form-control text-box single-line" id="DOB_MODAL_ID_NEW_PERSON" placeholder="Date of Birth" type="date">
+                            </div>
+
+                            <div class="form-group">
+                                @Html.DropDownList("MaritalStatus_MODAL_ID_NEW_PERSON",
+                             new SelectList(MaritalStatusList),
+                         "Select Marital Status", new { @class = "form-control" })
+                            </div>
+
+
+                            <div class="form-group">
+                                <input class="form-control text-box single-line" id="EmailAddress_MODAL_ID_NEW_PERSON" placeholder="Email" type="text">
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control text-box single-line" id="StreetAddressLine1_MODAL_ID_NEW_PERSON" placeholder="Street Address Line 1" type="text">
+                            </div>
+
+                            <div class="form-group">
+                                <input class="form-control text-box single-line" id="StreetAddressLine2_MODAL_ID_NEW_PERSON" placeholder="Street Address Line 2" type="text">
+                            </div>
+
+                            <div class="form-group">
+                                <input class="form-control text-box single-line" id="City_MODAL_ID_NEW_PERSON" placeholder="City" type="text">
+                            </div>
+
+
+                            <div class="form-group">
+                                @Html.DropDownList("State_MODAL_ID_NEW_PERSON",
+                             new SelectList(States),
+                         "Select State", new { @class = "form-control" })
+                            </div>
+
+
+                            <div class="form-group">
+                                <input class="form-control text-box single-line" id="Zip_MODAL_ID_NEW_PERSON" placeholder="Zip" type="text">
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control text-box single-line" id="PhoneNumber_MODAL_ID_NEW_PERSON" placeholder="Phone Number" type="text">
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <button class="btn btn-primary form-control" id="addPersonModalButton" data-dismiss="modal">Add New Person</button>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+@* SEARCH MODAL *@
+
+<!-- Modal -->
+<div class="modal fade bd-example-modal-lg" id="SearchModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Search For Person</h4>
+            </div>
+            <div class="modal-body">
+
+                @using (Html.BeginForm("SearchData", "Account", FormMethod.Post)) {
+                    <div class="row register-form">
+                        @*Group one *@
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.EditorFor(m => m.Person.FirstName, new { htmlAttributes = new { @class = "form-control", @id = "FirstName_SEARCH_ID", @placeholder = Html.DisplayNameFor(m => m.Person.FirstName) } })
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.EditorFor(m => m.Person.LastName, new { htmlAttributes = new { @class = "form-control", @id = "LastName_SEARCH_ID", @placeholder = Html.DisplayNameFor(m => m.Person.LastName) } })
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.DropDownListFor(m =>
+                      m.Person.Gender,
+                      new SelectList(GenderList),
+                      "Select Gender", new { @class = "form-control", @id = "Gender_SEARCH_ID" })
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.DropDownListFor(m =>
+                      m.Person.MaritalStatus,
+                      new SelectList(MaritalStatusList),
+                  "Select Marital Status", new { @class = "form-control", @id = "MaritalStatus_SEARCH_ID" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.EditorFor(m => m.Person.DateOfBirth, new { htmlAttributes = new { @class = "form-control", @id = "DOB_SEARCH_ID", @placeholder = Html.DisplayNameFor(m => m.Person.DateOfBirth) } })
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                @Html.EditorFor(m => m.Person.StreetAddressLine1, new { htmlAttributes = new { @class = "form-control", @id = "StreetAddressLine1_SEARCH_ID", @placeholder = Html.DisplayNameFor(m => m.Person.StreetAddressLine1) } })
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                @Html.EditorFor(m => m.Person.StreetAddressLine2, new { htmlAttributes = new { @class = "form-control", @id = "StreetAddressLine2_SEARCH_ID", @placeholder = Html.DisplayNameFor(m => m.Person.StreetAddressLine2) } })
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                @Html.EditorFor(m => m.Person.PhoneNumber, new { htmlAttributes = new { @class = "form-control", @id = "PhoneNumber_SEARCH_ID", @placeholder = Html.DisplayNameFor(m => m.Person.PhoneNumber) } })
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.EditorFor(m => m.Person.EmailAddress, new { htmlAttributes = new { @class = "form-control", @id = "EmailAddress_SEARCH_ID", @placeholder = Html.DisplayNameFor(m => m.Person.EmailAddress) } })
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.EditorFor(m => m.Person.City, new { htmlAttributes = new { @class = "form-control", @id = "City_SEARCH_ID", @placeholder = Html.DisplayNameFor(m => m.Person.City) } })
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.DropDownListFor(m =>
+                         m.Person.State,
+                          new SelectList(States),
+                         "Select State", new { @class = "form-control", @id = "State_SEARCH_ID" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.EditorFor(m => m.Person.Zip, new { htmlAttributes = new { @class = "form-control", @id = "Zip_SEARCH_ID", @placeholder = Html.DisplayNameFor(m => m.Person.Zip) } })
+                            </div>
+                        </div>
+
+                    </div>
+
+                    @* Group Two *@
+
+                    <div class="col-md-4">
+
+
+
+
+
+
+
+                    </div>
+
+                    @*Group Three *@
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <button class="btn btn-info form-control" type="submit">Search</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                }
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+
+@* DELETE MODAL *@
 
 <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
     <div class="modal-dialog">
@@ -412,7 +513,7 @@
     <script>
 
 
+
+
     </script>
-
-
 }

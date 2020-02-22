@@ -5,7 +5,7 @@ body {
 
 tr {
     background-color: white;
-    transition: background-color 1s;
+    transition: background-color 0.2s;
 }
 
 .update-row-success {
@@ -110,7 +110,7 @@ tr {
     }
 
     #update {
-        background-color: burlywood;
+        background-color: lightskyblue;
     }
 
 
@@ -170,3 +170,14 @@ tr {
     .notice-danger > strong {
         color: #d73814;
     }
+
+.row-highlight {
+    background-color: lightyellow;
+}
+
+.feedback-container {
+    position: absolute;
+    z-index: 100;
+    right: 10%;
+    top: 0;
+}

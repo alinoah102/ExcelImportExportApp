@@ -9,6 +9,7 @@ using DataLibrary.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using UI.Models;
 
 namespace UI.Controllers {
@@ -18,6 +19,38 @@ namespace UI.Controllers {
             return View();
         }
 
+        [HttpGet]
+        public IActionResult RetrieveData() {
+
+            PersonHelperMethodsDalc helperMethods = new PersonHelperMethodsDalc();
+            SearchPersonViewModel model = new SearchPersonViewModel();
+
+            Dictionary<int, string> genderDictReversed = helperMethods.GetGenderDictionary().ToDictionary(x => x.Value, x => x.Key);
+            Dictionary<int, string> maritalStatusDictReversed = helperMethods.GetMaritalStatusDictionary().ToDictionary(x => x.Value, x => x.Key);
+
+            List<PersonModel> personModelList = helperMethods.RetrieveData();
+            List<PersonViewModel> personViewModelList = new List<PersonViewModel>();
+
+            foreach(PersonModel person in personModelList) {
+
+                PersonViewModel personViewModelObj = person;
+                personViewModelObj.Gender = genderDictReversed[person.GenderID];
+                personViewModelObj.MaritalStatus = maritalStatusDictReversed[person.MaritalStatusID];
+
+                personViewModelList.Add(personViewModelObj);
+
+            }
+
+            model.SearchResults = personViewModelList;
+            // get a list of gender Names
+            model.GenderTypes = genderDictReversed.Values.ToList();
+
+            // get a list of marital status names
+            model.MaritalStatusTypes = maritalStatusDictReversed.Values.ToList();
+
+            return View("SearchData", model);
+        }
+
         [HttpPost]
         public IActionResult DeletePerson(string json) {
 
@@ -25,22 +58,88 @@ namespace UI.Controllers {
             PersonDalc personOperation = new PersonDalc();
             personOperation.PersonDelete(personId);
 
-            return Json(new { success = true/*, responseText = "Your message successfuly sent!"*/ });
+            return Json(new { success = true, responseText = $"Person Row With ID: {personId} Has Been Deleted Successfully" });
         }
 
-        [AcceptVerbs("POST")]
+        [HttpPost]
         public IActionResult ExportPerson(string json) {
 
+           
+            dynamic data = JObject.Parse(json);
+        
+
+            PersonHelperMethodsDalc helperMethods = new PersonHelperMethodsDalc();
+
+            Dictionary<string, int> genderDict = helperMethods.GetGenderDictionary();
+            Dictionary<string, int> maritalStatusDict = helperMethods.GetMaritalStatusDictionary();
+
+            string gender = data.Gender;
+            string maritalStatus = data.MaritalStatus;
+
+
+
+            PersonModel person =  JsonConvert.DeserializeObject<PersonModel>(json);
+            person.GenderID = genderDict[gender];
+            person.MaritalStatusID = maritalStatusDict[maritalStatus];
 
             ExcelFileProcessor fileProc = new ExcelFileProcessor();
 
-            fileProc.ExportToExcel(json);
-            return Json(new { success = true/*, responseText = "Your message successfuly sent!"*/ });
+            List<PersonModel> personList = new List<PersonModel>();
+            personList.Add(person);
+
+            fileProc.ExportToExcel(personList, "Person.xlsx");
+
+            return Json(new { success = true, responseText = "Person Has Been Exported Successfully" });
 
         }
 
         [HttpPost]
-        [AcceptVerbs("Post")]
+        public IActionResult ExportPersonList(string json) {
+
+
+            dynamic data = JArray.Parse(json);
+
+         
+            PersonHelperMethodsDalc helperMethods = new PersonHelperMethodsDalc();
+
+            Dictionary<string, int> genderDict = helperMethods.GetGenderDictionary();
+            Dictionary<string, int> maritalStatusDict = helperMethods.GetMaritalStatusDictionary();
+
+
+            List<PersonModel> personList = new List<PersonModel>();
+
+            foreach (var p in data) {
+                string gender = p.Gender;
+                string maritalStatus = p.MaritalStatus;
+
+                PersonModel person = new PersonModel();
+
+                person.GenderID = genderDict[gender];
+                person.MaritalStatusID = maritalStatusDict[maritalStatus];
+                person.FirstName = p.FirstName;
+                person.LastName = p.LastName;
+                person.DateOfBirth = p.DateOfBirth;
+                person.EmailAddress = p.EmailAddress;
+                person.StreetAddressLine1 = p.StreetAddressLine1;
+                person.StreetAddressLine2 = p.StreetAddressLine2;
+                person.City = p.City;
+                person.Zip = p.Zip;
+                person.PhoneNumber = p.PhoneNumber;
+                person.State = p.State;
+
+                personList.Add(person);
+            }
+
+            ExcelFileProcessor fileProc = new ExcelFileProcessor();
+
+            fileProc.ExportToExcel(personList, "Data.xlsx");
+
+            return Json(new { success = true, responseText = "Data Has Been Exported Successfully" });
+
+        }
+
+        [HttpPost]
+    
         public IActionResult UpdatePerson(string json) {
 
             PersonViewModel personViewModelNew = JsonConvert.DeserializeObject<PersonViewModel>(json);
@@ -58,8 +157,30 @@ namespace UI.Controllers {
 
             personOperation.PersonUpdate(person);
 
-            return Json(new { success = true/*, responseText = "Your message successfuly sent!"*/ });
+            return Json(new { success = true, responseText = $"Person ID:{person.PersonID} Has Been Updated Successfully" });
         }
+
+        [HttpPost]
+        public IActionResult AddPerson(string json) {
+
+            PersonViewModel personViewModelNew = JsonConvert.DeserializeObject<PersonViewModel>(json);
+
+            PersonDalc personOperation = new PersonDalc();
+            PersonHelperMethodsDalc helperMethods = new PersonHelperMethodsDalc();
+
+            Dictionary<string, int> genderDict = helperMethods.GetGenderDictionary();
+            Dictionary<string, int> maritalStatusDict = helperMethods.GetMaritalStatusDictionary();
+
+            PersonModel person = new PersonModel();
+            person = personViewModelNew;
+            person.GenderID = genderDict[personViewModelNew.Gender];
+            person.MaritalStatusID = maritalStatusDict[personViewModelNew.MaritalStatus];
+
+            personOperation.PersonInsert(person);
+
+            return Json(new { success = true, responseText = $" {person.FirstName} {person.LastName} Of {person.City} Has Been Added Successfully" });
+        }
+
 
 
         [HttpGet]
@@ -78,6 +199,7 @@ namespace UI.Controllers {
             model.Person = new PersonViewModel();
 
             PersonHelperMethodsDalc helper = new PersonHelperMethodsDalc();
+
             // get a list of gender Names
             model.GenderTypes = helper.GetGenderDictionary().Keys.ToList();
 
@@ -135,7 +257,7 @@ namespace UI.Controllers {
             int count = 0;
             foreach (PersonModel person in searchExecutionResults) {
 
-                // limit how many we get for now, or we can implement pages
+                // limit how many rows we get for now, or we can implement pages
                 count++;
                 if (count == 25) {
                     break;
@@ -201,7 +323,7 @@ namespace UI.Controllers {
                     viewPerson.PhoneNumber = person.PhoneNumber;
                     viewPerson.City = person.City;
                     viewPerson.State = person.State;
-                    viewPerson.Zip = viewPerson.Zip;
+                    viewPerson.Zip = person.Zip;
 
 
                     model.PersonList.Add(viewPerson);

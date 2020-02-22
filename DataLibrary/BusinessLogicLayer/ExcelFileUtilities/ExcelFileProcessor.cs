@@ -13,20 +13,6 @@ using Microsoft.AspNetCore.Http;
 namespace DataLibrary.BusinessLogicLayer.ExcelSheetProcessor {
     public class ExcelFileProcessor {
 
-        public void ImportExcelWorksheet(ExcelWorksheet worksheet) {
-
-            // Extract the data from the worksheet to newly created DataTable starting at 
-            // second row and first column (first row is for attributes)  until the first empty row appears.
-            var dataTable = worksheet.CreateDataTable(new CreateDataTableOptions() {
-                StartRow = 0,
-                StartColumn = 0,
-                ExtractDataOptions = ExtractDataOptions.StopAtFirstEmptyRow
-            });
-
-            // TO DO
-
-        }
-
 
         // return list of inserted rows if successful
         public List<PersonModel> ImportExcelFormFile(IFormFile file) {
@@ -75,10 +61,20 @@ namespace DataLibrary.BusinessLogicLayer.ExcelSheetProcessor {
             return data;
         }
 
-        public void ExportToExcel(string jsonString) {
+        public void ExportToExcel(List<PersonModel> modelList, string filename) {
             try {
+
                 var mapper = new Mapper();
-                mapper.Save("test.xlsx", jsonString, "newSheet", overwrite: true);
+
+                PersonHelperMethodsDalc personHelper = new PersonHelperMethodsDalc();
+
+                // reverse dictionaries for quicker look up O(1)
+                Dictionary<int, string> genderDictReversed = personHelper.GetGenderDictionary().ToDictionary(x => x.Value, x => x.Key);
+                Dictionary<int, string> maritalStatusDictReversed = personHelper.GetMaritalStatusDictionary().ToDictionary(x => x.Value, x => x.Key);
+
+                
+
+                mapper.Save(filename, modelList, "newSheet", overwrite: true);
 
 
             }

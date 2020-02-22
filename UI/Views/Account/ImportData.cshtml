@@ -32,12 +32,9 @@
         </div>
 
         @if (NumOfRecords > 0) {
-    <div class="notice notice-success result-message-box">
-        <strong>Notice</strong> Completion Time: @DateTime.Now (@NumOfRecords Records Retrieved)
-    </div>
-                            
-
-                    
+            <div class="notice notice-success result-message-box">
+                <strong>Notice</strong> Completion Time: @DateTime.Now (@NumOfRecords New Records Have Been Inserted To Person Table)
+            </div>      
         }
 
     </form>
@@ -53,10 +50,7 @@
     @section Scripts  {
         <script>
 
-            $("#FileUploadButton").click(function () {
-                $("FileNameLabel").val("TEST");
-
-            })
+          
 
 
         </script>
